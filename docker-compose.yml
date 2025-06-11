@@ -1,0 +1,59 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - '6379:6379'
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    ports:
+      - '3001:3001'
+    depends_on:
+      - rabbitmq
+
+  notification-service:
+    build: ./notification-service
+    container_name: notification-service
+    ports:
+      - '3002:3002'
+    depends_on:
+      - rabbitmq
+      - redis
+
+  payment-service:
+    build: ./payment-service
+    container_name: payment-service
+    ports:
+      - '3003:3003'
+    depends_on:
+      - rabbitmq
+      - redis
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - "1025:1025"   
+      - "8025:8025"   
+
+  mail-service:
+    build: ./mail-service
+    container_name: mail-service
+    ports:
+      - '3004:3004'
+    depends_on:
+      - rabbitmq
+      - redis
+
+

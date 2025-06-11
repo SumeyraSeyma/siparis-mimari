@@ -1,0 +1,14 @@
+{
+ "name": "mail-service",
+ "version": "1.0.0",
+ "main" : "service.js",
+ 
+ "scripts": {
+    "start": "node service.js"
+  },
+  "dependencies": {
+    "amqplib": "^0.10.8",
+    "express": "^5.1.0",
+    "nodemailer": "^7.0.3"
+  }
+}
